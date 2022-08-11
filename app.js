@@ -17,55 +17,65 @@ let votesB = 0;
 let pastPolls = [];
 // set event listeners 
 newPollEl.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const data = new FormData(currentPollEl);
-  const userQuestion = data.get('question');
-  const userOptionA = data.get('questionA');
-  const userOptionB = data.get('questionB');
-  question = userQuestion;
-  optionA = userOptionA;
-  optionB = userOptionB;
+    e.preventDefault();
+    const data = new FormData(newPollEl);
+    const userQuestion = data.get('question');
+    const userOptionA = data.get('questionA');
+    const userOptionB = data.get('questionB');
+    question = userQuestion;
+    optionA = userOptionA;
+    optionB = userOptionB;
 
-  renderPoll();
 
-  displayCurrentPoll();
+    displayCurrentPoll();
 
 });
 
 optionAAddButton.addEventListener('click', () => {
-votesA++;
-displayCurrentPoll();
+    votesA++;
+    console.log('votesA');
+    displayCurrentPoll();
 });
 optionBAddButton.addEventListener('click', () => {
-  votesB++;
-  displayCurrentPoll();
+    votesB++;
+    displayCurrentPoll();
 });
 
 optionASubtractButton.addEventListener('click', () => {
-  votesA--;
-  displayCurrentPoll();
+    votesA--;
+    displayCurrentPoll();
 });
 
 optionBSubtractButton.addEventListener('click', () => {
-  votesB--;
-  displayCurrentPoll();
+    votesB--;
+    displayCurrentPoll();
+});
+
+finishPollButton.addEventListener('click', () => {
+    pastPollsContainer.textContent = '';
+    displayPastPolls();
+    votesA = 0;
+    votesB = 0;
+    currentPollEl.textContent = '';
 });
 
 function renderPoll(question, optionA, optionB, votesA, votesB) {
-  const currentPollEl = document.createElement('div');
-  const questionEl = document.createElement('p');
-  const userOptionA = document.createElement('p');
-  const userOptionB = document.createElement('p');
-  const votesAEl = document.createElement('p');
-  const votesBEl = document.createElement('p');
-  questionEl.textContent = question;
-  userOptionA.textContent = optionA;
-  userOptionB.textContent = optionB;
-  votesAEl.textContent = votesA;
-  votesBEl.textContent = votesB;
+    const nowPollEl = document.createElement('div');
+    const questionEl = document.createElement('p');
+    const userOptionA = document.createElement('p');
+    const userOptionB = document.createElement('p');
+    const votesAEl = document.createElement('p');
+    const votesBEl = document.createElement('p');
+    questionEl.textContent = question;
+    userOptionA.textContent = optionA;
+    userOptionB.textContent = optionB;
+    votesAEl.textContent = votesA;
+    votesBEl.textContent = votesB;
+    votesAEl.classList.add('votesA');
+    votesBEl.classList.add('votesB');
 
-  currentPollEl.append(questionEl, userOptionA, userOptionB, votesA, votesB);
-  return currentPollEl;
+    nowPollEl.append(questionEl, userOptionA, userOptionB, votesA, votesB);
+    return nowPollEl;
 
 
 
@@ -74,12 +84,27 @@ function renderPoll(question, optionA, optionB, votesA, votesB) {
 }
 
 function displayCurrentPoll() {
-  newPollEl.reset();
-  currentPollEl.textContent = '';
-  const currentPollData = renderPoll(question, optionA, optionB, votesA, votesB);
-  currentPollEl.append(currentPollData);
-};
+    newPollEl.reset();
+    currentPollEl.textContent = '';
+    const currentPollData = renderPoll(question, optionA, optionB, votesA, votesB);
+    currentPollEl.append(currentPollData);
+}
 
+function displayPastPolls() {
+    const pastPoll = {
+        question: question,
+        optionA: optionA,
+        optionB: optionB,
+        votesA: votesA,
+        votesB: votesB
+    };
+    pastPolls.push(pastPoll);
+
+    for (let poll of pastPolls) {
+        const currentPastPoll = renderPoll(poll.question, poll.optionA, poll.optionB, poll.votesA, poll.votesB);
+        pastPollsContainer.append(currentPastPoll);
+    }
+}
 
   // get user input
   // use user input to update state 

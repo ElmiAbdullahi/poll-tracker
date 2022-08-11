@@ -33,3 +33,15 @@ footer {
     justify-content: flex-end;
     background-color: var(--footer-background);
 }
+
+.votesA {
+    padding:10px;
+}
+.votesB {
+    padding:10px;
+}
+
+#current-poll-container {
+    display: flex;
+}
+
